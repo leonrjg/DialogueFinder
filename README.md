@@ -2,12 +2,18 @@
 
 Web app to find scenes of a movie or TV show by matching keywords against the subtitles
 
+<img src="https://github.com/user-attachments/assets/1117bda5-0487-42b8-ac1c-5e3a4e36c19f" style="border-radius:4px" />
+
+
 ## 🟍 Features:
 🟢 Search dialogues based on keywords or phrases
 
 🟢 Watch a clip of the scene if available
 
 🟢 Cycle through the dialogues
+
+![image](https://github.com/user-attachments/assets/17b8cd7d-9cff-45de-9a4e-f3e7cd4e8470)
+![image](https://github.com/user-attachments/assets/40c71e2e-9aca-43d6-afe6-bcd808bfa688)
 
 The app is basically an Elasticsearch UI tailored for this use case.
 
