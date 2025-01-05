@@ -1,11 +1,11 @@
 services:
   dialoguefinder:
-    image: dialoguefinder
     build:
       context: .
     container_name: DialogueFinder
     environment:
       - ELASTIC_HOSTNAME=Elasticsearch_DF
+      - ELASTIC_SCHEME # Optional
       - ELASTIC_PORT # Optional
       - ELASTIC_PASSWORD # Optional
       - MEDIA_PATH # Optional
