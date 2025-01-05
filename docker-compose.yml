@@ -4,7 +4,7 @@ services:
       context: .
     container_name: DialogueFinder
     environment:
-      - ELASTIC_HOSTNAME=Elasticsearch_DF
+      - ELASTIC_HOSTNAME=elasticsearch_df
       - ELASTIC_SCHEME # Optional
       - ELASTIC_PORT # Optional
       - ELASTIC_PASSWORD # Optional
@@ -25,12 +25,10 @@ services:
       - dialoguefinder
   elasticsearch:
     image: elasticsearch:8.17.0
-    container_name: Elasticsearch_DF
+    container_name: elasticsearch_df
     environment:
       discovery.type: single-node
       xpack.security.enabled: false
-    ports:
-      - "9200:9200"
     healthcheck:
       test: ["CMD-SHELL", "curl -k --silent --fail http://localhost:9200/_cluster/health || exit 1"]
       interval: 5s
