@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html data-theme="dark">
+<head>
+    <title>{{$title}}{{title}}{{/title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/style.css" >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" >
+    <script type="text/hyperscript" src="/typewriter._hs"></script>
+    <script src="https://unpkg.com/hyperscript.org"></script>
+    <script src="https://unpkg.com/htmx.org@latest"></script>
+</head>
+<body>
+<progress id="loading" class="htmx-indicator"></progress>
+<main class="container" style="max-width:1000px" _="on htmx:beforeOnLoad if #player exists then set #player's innerHTML to ''">
+    <h1 style="text-align:center" hx-trigger="click" hx-swap="outerHTML" hx-get="/" hx-push-url="true" hx-select="#page" hx-target="#page">
+        DialogueFinder
+    </h1>
+    <fieldset role="group">
+        <input id="search" type="search" name="dialogue" placeholder="Search" aria-label="Search"
+               hx-get="/search?limit=10" hx-trigger="keyup changed delay:500ms" hx-swap="outerHTML" hx-target="#page" hx-push-url="true" hx-select="#page" hx-indicator="#loading"
+               _='on load call type(["May the Force be with you", "E.T. phone home", "Luke, I am your father"])'/>
+    </fieldset>

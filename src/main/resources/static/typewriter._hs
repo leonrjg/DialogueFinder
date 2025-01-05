@@ -1,0 +1,10 @@
+def type(phrases)
+      for phrase in phrases
+         set #search's @placeholder to ""
+         for letter in phrase
+              set #search's @placeholder to #search's @placeholder + letter
+              wait 70ms
+         end
+         wait 1s
+      end
+end

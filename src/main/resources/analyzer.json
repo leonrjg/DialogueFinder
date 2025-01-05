@@ -1,0 +1,15 @@
+{
+    "analysis": {
+      "analyzer": {
+        "subtitle_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "word_delimiter_graph"
+          ]
+        }
+      }
+    }
+}

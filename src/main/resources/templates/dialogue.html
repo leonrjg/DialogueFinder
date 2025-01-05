@@ -1,0 +1,21 @@
+{{ < header }}
+    {{$title}}{{context_dialogues.1.text}} - DialogueFinder{{/title}}
+{{ / header }}
+<div id="page">
+    <article style="text-align:center">
+        <header><small>{{context_dialogues.0.episode}}</small></header>
+        <div id="player">
+            <video src="/files/clips/{{episode}}/{{index}}.mp4" autoplay controls></video>
+        </div>
+        <div id="dialogue_selector">
+                {{#context_dialogues}}
+                <a class="dialogue"
+                   hx-get="/dialogue?episode={{episode}}&index={{index}}" hx-push-url="true" hx-target="#dialogue_selector"
+                   hx-select-oob="#dialogue_selector,#player" hx-indicator="#loading">
+                    {{text}}<br>
+                </a>
+                {{/context_dialogues}}
+        </div>
+    </article>
+</div>
+{{ >footer }}
