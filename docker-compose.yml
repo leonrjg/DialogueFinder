@@ -10,7 +10,7 @@ services:
       - ELASTIC_PASSWORD # Optional
       - MEDIA_PATH # Optional
     volumes:
-      - C:/Users/${USER_NAME}/Desktop/dialoguefinder_media:/mnt/media
+      - ${VOL_MEDIA_PATH}:/mnt/media
     ports:
       - "8080:8080"
     depends_on:

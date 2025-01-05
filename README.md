@@ -14,7 +14,7 @@ The app is basically an Elasticsearch UI tailored for this use case.
 ## Setup (Docker)
 Requirements: Elasticsearch, Java 17+
 - Clone this repository
-- Replace "C:/Users/${USER_NAME}/Desktop/..." with your local media directory in `docker-compose.yml`
+- Set the 'VOL_MEDIA_PATH' environment variable to your local media directory (see below for more info)
 - Execute "docker-compose up"
 
 ## Populating your dialogue database
