@@ -6,12 +6,12 @@
     <article class="results">
         <div class="grid">
             <div style="max-height:300px">
-                <img style="width:100%" src="/files/covers/{{episode}}.jpg" onerror="this.style.display='none'" />
+                <img style="width:100%" src="/files/covers/{{#urlencode}}{{episode}}{{/urlencode}}.jpg" onerror="this.style.display='none'" />
             </div>
             <div style="text-align:left">
                 <h6 style="margin:3px">{{episode}}</h6>
                 {{#dialogues}}
-                <a hx-get="/dialogue?episode={{episode}}&index={{dialogue.index}}"
+                <a hx-get="/dialogue?episode={{#urlencode}}{{episode}}{{/urlencode}}&index={{dialogue.index}}"
                    hx-select="#page" hx-swap="innerHTML show:window:top" hx-push-url="true" hx-target="#page" hx-indicator="#loading">
                     <p>{{{highlight}}} <br><small>{{dialogue.startTime}}</small></p>
                 </a>

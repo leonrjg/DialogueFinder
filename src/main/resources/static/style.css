@@ -1,10 +1,3 @@
-html {
-    background-image: url("/img/bg-lqsa.png");
-    background-blend-mode: color-dodge;
-    background-repeat: no-repeat;
-    background-position: top;
-}
-
 body {
     opacity:0.9;
 }
@@ -14,13 +7,13 @@ img {
 }
 
 header {
-    background-color:var(--pico-muted-border-color);
+    background-color:var(--pico-form-element-border-color) !important;
     padding: 5px !important;
     margin-bottom: 10px !important;
 }
 
 footer {
-    background-color:var(--pico-muted-border-color);
+    background-color:var(--pico-muted-border-color) !important;
     padding:10px;
     margin-top:20px;
     border-radius:5px;
