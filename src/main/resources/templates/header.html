@@ -17,7 +17,7 @@
         DialogueFinder
     </h1>
     <fieldset role="group">
-        <input id="search" type="search" name="dialogue" placeholder="Search" aria-label="Search"
+        <input id="search" type="search" name="dialogue" placeholder="" aria-label="Search"
                hx-get="/search?limit=10" hx-trigger="keyup[this.value.length >= 3] changed delay:500ms" hx-swap="outerHTML" hx-target="#page" hx-push-url="true" hx-select="#page" hx-indicator="#loading"
                _='on load call type(["May the Force be with you", "E.T. phone home", "Luke, I am your father"])'/>
     </fieldset>

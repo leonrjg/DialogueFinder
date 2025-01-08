@@ -15,12 +15,11 @@ Web app to find scenes of a movie or TV show by matching keywords against the su
 ![image](https://github.com/user-attachments/assets/17b8cd7d-9cff-45de-9a4e-f3e7cd4e8470)
 ![image](https://github.com/user-attachments/assets/40c71e2e-9aca-43d6-afe6-bcd808bfa688)
 
-The app is basically an Elasticsearch UI tailored for this use case.
-
 ## Setup (Docker)
 Requirements: Elasticsearch, Java 17+
 - Clone this repository
 - Set the 'VOL_MEDIA_PATH' environment variable to your local media directory (see below for more info)
+  - Example: `VOL_MEDIA_PATH=C:\Users\[your_user]\media`
 - Execute "docker-compose up"
 
 ## Populating your dialogue database
@@ -52,14 +51,14 @@ Every line of each subtitle file must be inserted into the Elasticsearch instanc
 }
 ```
 Once insertion is done, you will be able to search the database, and if you added video clips of 
-each dialogue based on the 'index' field to the "clips" folder, you will also be able to play them. 
-
-An example Python script is provided to perform this data entry, including clips.
+each dialogue based on the 'index' field to the "clips" folder, you will also be able to play them.
 
 ### Example populating script
+An example Python script is provided to perform dialogue data entry and clip generation.
 Dependencies: [ffmpeg-python](https://github.com/kkroening/ffmpeg-python), [srt](https://github.com/cdown/srt), [elasticsearch](https://elasticsearch-py.readthedocs.io/en/v8.17.0/)
 ```python
 import os
+import base64
 from datetime import timedelta
 import srt
 import ffmpeg
@@ -71,8 +70,9 @@ COVER_DIR = './covers'
 CLIP_DIR = './clips'
 CLIP_MARGIN_SECS = 1
 ELASTIC_INDEX = "media"
+CHUNK_SIZE = 600
 
-es = Elasticsearch(hosts='http://localhost:9200', basic_auth=['elastic', 'mypassword'], verify_certs=False)
+es = Elasticsearch(hosts='http://localhost:9200', basic_auth=['elastic', 'mypassword'], verify_certs=False, request_timeout=60)
 
 sub_files = os.listdir(SUB_DIR)
 for sub_file in sub_files:
@@ -92,10 +92,10 @@ for sub_file in sub_files:
     episode_docs = []
     subs = list(srt.parse(content))
     for s in subs:
-        id = '%s_%s' % (episode, s.index)
+        id = '%s_%s' % (base64.b64encode(episode.encode()).decode(), s.index)
         doc = {'_index': ELASTIC_INDEX, '_id': id, '_routing': episode, 'index': s.index, 'episode': episode,
                'startTime': str(timedelta(seconds=s.start.seconds)), 'endTime': str(timedelta(s.end.seconds)),
-               'text': s.content, 'has_clip': False}
+               'text': s.content, 'has_clip_file': False}
 
         if has_vid_file:
             clip_file = '%s/%s/%s.mp4' % (CLIP_DIR, episode, s.index)
@@ -107,11 +107,14 @@ for sub_file in sub_files:
                 encoding = ffmpeg.input(vid_file, ss=max(s.start.seconds - CLIP_MARGIN_SECS, 0),
                                         to=s.end.seconds + CLIP_MARGIN_SECS)
                 video = encoding.video.filter('scale', width='640', height='-1')
-                ffmpeg.output(video, encoding.audio, clip_file, f='mp4', acodec='copy', preset='ultrafast').run(overwrite_output=True)
+                output = ffmpeg.output(video, encoding.audio, clip_file, acodec='copy', movflags='faststart', preset='veryfast')
+                output.run(overwrite_output=True)
             
             doc['has_clip_file'] = os.path.exists(clip_file)
 
         episode_docs.append(doc)
 
-    helpers.bulk(es, episode_docs)
+    for chunk in [episode_docs[i:i + CHUNK_SIZE] for i in range(0, len(episode_docs), CHUNK_SIZE)]:
+        print("Inserting chunk")
+        helpers.bulk(es, chunk)
 ```
