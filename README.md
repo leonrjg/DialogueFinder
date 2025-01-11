@@ -73,6 +73,9 @@ ELASTIC_INDEX = "media"
 CHUNK_SIZE = 600
 
 es = Elasticsearch(hosts='http://localhost:9200', basic_auth=['elastic', 'mypassword'], verify_certs=False, request_timeout=60)
+mappings = { "properties": { "text": { "type": "text", "analyzer": "subtitle_analyzer" } } }
+settings = { "analysis": { "analyzer": { "subtitle_analyzer": { "type": "custom", "tokenizer": "standard", "filter": [ "lowercase", "asciifolding" ] } } } }
+es.indices.create(index=ELASTIC_INDEX, settings=settings, mappings=mappings, ignore=400)
 
 sub_files = os.listdir(SUB_DIR)
 for sub_file in sub_files:
@@ -95,7 +98,7 @@ for sub_file in sub_files:
         id = '%s_%s' % (base64.b64encode(episode.encode()).decode(), s.index)
         doc = {'_index': ELASTIC_INDEX, '_id': id, '_routing': episode, 'index': s.index, 'episode': episode,
                'startTime': str(timedelta(seconds=s.start.seconds)), 'endTime': str(timedelta(s.end.seconds)),
-               'text': s.content, 'has_clip_file': False}
+               'text': s.content, 'hasClipFile': False}
 
         if has_vid_file:
             clip_file = '%s/%s/%s.mp4' % (CLIP_DIR, episode, s.index)
