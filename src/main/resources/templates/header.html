@@ -12,7 +12,7 @@
 </head>
 <body>
 <progress id="loading" class="htmx-indicator"></progress>
-<main class="container" style="max-width:1000px" _="on htmx:beforeOnLoad if #player exists then set #player's innerHTML to ''">
+<main class="container" style="max-width:1000px">
     <h1 style="text-align:center" hx-trigger="click" hx-swap="outerHTML" hx-get="/" hx-push-url="true" hx-select="#page" hx-target="#page">
         DialogueFinder
     </h1>

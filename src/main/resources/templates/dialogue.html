@@ -5,7 +5,7 @@
     <article style="text-align:center">
         <header><small style="font-weight:500;vertical-align:text-bottom">{{context_dialogues.0.episode}}</small></header>
         <div id="player">
-            <video src="/files/clips/{{#urlencode}}{{episode}}{{/urlencode}}/{{index}}.mp4" autoplay controls></video>
+            <video src="/files/clips/{{#urlencode}}{{episode}}{{/urlencode}}/{{index}}.mp4" controls autoplay _="on play remove @autoplay set @muted to true"></video>
         </div>
         <div id="dialogue_selector">
                 {{#context_dialogues}}
